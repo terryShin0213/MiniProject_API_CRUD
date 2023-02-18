@@ -1,6 +1,7 @@
 package com.blog.domain.article.entity;
 
 import com.blog.common.entity.BaseTimeEntity;
+import com.blog.domain.review.Review;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +11,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Where;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +29,9 @@ public class Article extends BaseTimeEntity {
   private String title;
   private String content;
   private String imageUrl;
+
+  @JdbcTypeCode(SqlTypes.JSON)
+  private Review review;
 
   private Article(UUID boardId, String title, String content, String imageUrl) {
     this.boardId = boardId;

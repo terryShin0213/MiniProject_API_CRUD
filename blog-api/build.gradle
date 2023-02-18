@@ -1,0 +1,25 @@
+jar {
+    enabled = false
+}
+
+dependencies {
+    implementation project(path: ':blog-core')
+
+    // spring
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure'
+
+    // config
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // web
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'commons-io:commons-io:2.11.0' // filenameUtils
+
+    // logging
+//    implementation 'net.logstash.logback:logstash-logback-encoder:7.2'
+}

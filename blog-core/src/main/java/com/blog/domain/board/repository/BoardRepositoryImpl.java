@@ -4,14 +4,9 @@ import static com.blog.domain.article.entity.QArticle.article;
 import static com.blog.domain.board.entity.QBoard.board;
 
 import com.blog.domain.board.vo.BoardWithAriticle;
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.PathBuilder;
-import com.querydsl.core.types.dsl.PathBuilderFactory;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -21,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mapping.PropertyPath;
 
 public class BoardRepositoryImpl implements BoardRepositoryCustom{
 
@@ -74,24 +68,13 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom{
 
   private OrderSpecifier makeOrderSpecifier(Sort.Order order){
     Order direction = order.isAscending() ? Order.ASC : Order.DESC;
-    return new OrderSpecifier(direction, buildOrderPropertyPathFrom(order));
-  }
+    String prop = order.getProperty();
 
-  private Expression<?> buildOrderPropertyPathFrom(Sort.Order order) {
-    PathBuilder<?> builder = new PathBuilderFactory().create(BoardWithAriticle.class);
-
-    PropertyPath path = PropertyPath.from(order.getProperty(), builder.getType());
-    Expression<?> sortPropertyExpression = builder;
-
-    while (path != null) {
-
-      sortPropertyExpression = !path.hasNext() && order.isIgnoreCase() && String.class.equals(path.getType())
-          ? Expressions.stringPath((Path<?>) sortPropertyExpression, path.getSegment()).lower()
-          : Expressions.path(path.getType(), (Path<?>) sortPropertyExpression, path.getSegment());
-
-      path = path.next();
+    switch (prop) {
+      case "modifiedDate" :
+        return new OrderSpecifier(direction, board.modifiedDate);
+      default  :
+        return new OrderSpecifier(direction, board.createdDate);
     }
-
-    return sortPropertyExpression;
   }
 }

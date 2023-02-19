@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Where;
 import org.hibernate.type.SqlTypes;
@@ -31,6 +32,7 @@ public class Article extends BaseTimeEntity {
   private String imageUrl;
 
   @JdbcTypeCode(SqlTypes.JSON)
+  @Setter
   private Review review;
 
   private Article(UUID boardId, String title, String content, String imageUrl) {

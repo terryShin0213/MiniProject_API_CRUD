@@ -2,6 +2,8 @@ package com.blog.domain.article.entity;
 
 import com.blog.common.entity.BaseTimeEntity;
 import com.blog.domain.review.Review;
+import com.querydsl.core.annotations.QueryInit;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,9 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Where;
-import org.hibernate.type.SqlTypes;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,8 +31,10 @@ public class Article extends BaseTimeEntity {
   private String content;
   private String imageUrl;
 
-  @JdbcTypeCode(SqlTypes.JSON)
+//  @JdbcTypeCode(SqlTypes.JSON)
   @Setter
+  @Embedded
+  @QueryInit("*")
   private Review review;
 
   private Article(UUID boardId, String title, String content, String imageUrl) {
